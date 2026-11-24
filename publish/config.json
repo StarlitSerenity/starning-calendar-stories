@@ -1,0 +1,11 @@
+{
+  "_note": "imageBaseUrl 要改成你放圖片的公開網址（結尾不含檔名）。IG/FB 會自己去這個網址抓 YYYY-MM-DD.png。",
+  "imageBaseUrl": "https://starlitserenity.github.io/starning-calendar-stories/stories",
+  "graphVersion": "v25.0",
+  "pages": {
+    "_note": "repoDir=GitHub Pages 倉庫 clone 在你電腦上的路徑；subdir 要和 imageBaseUrl 最後一段一致",
+    "repoDir": "C:/Users/seren/Documents/starning-calendar-stories",
+    "subdir": "stories",
+    "branch": "main"
+  }
+}
