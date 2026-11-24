@@ -35,6 +35,7 @@ function args() {
   return {
     publish: a.includes("--publish"),
     force: a.includes("--force"),
+    ignoreStart: a.includes("--ignore-start"),
     checkUrl: a.includes("--check-url"),
     date: get("--date"),
     platform: get("--platform") || "both",
@@ -114,6 +115,15 @@ async function main() {
   console.log(`本機圖　${file}  ${fs.existsSync(file) ? "✓" : "✗ 找不到（本機要先 render-stories；雲端要先把圖 sync 上去）"}`);
   console.log(`公開網址　${imageUrl}`);
   if (!fs.existsSync(file)) process.exit(1);
+
+  // 起始日保護：還沒到自動發布起始日就不發（避免跟已手動排程的限動重複）
+  if (CONFIG.startDate && date < CONFIG.startDate) {
+    console.log(`自動發布起始日　${CONFIG.startDate}（${date} 早於起始日）${o.ignoreStart ? "　→ 已加 --ignore-start，視為測試" : ""}`);
+    if (o.publish && !o.ignoreStart) {
+      console.log("→ 略過，不發布（那幾天你已手動排程）。要測試真發請加 --ignore-start。");
+      return;
+    }
+  }
 
   if (o.checkUrl || o.publish) {
     try {

@@ -7,5 +7,7 @@
     "repoDir": "C:/Users/seren/Documents/starning-calendar-stories",
     "subdir": "stories",
     "branch": "main"
-  }
+  },
+  "startDate": "2026-12-21",
+  "_startDate": "自動發布起始日：早於此日期的「--publish」會被略過（你已手動排程到 12/20）。測試請加 --ignore-start。"
 }

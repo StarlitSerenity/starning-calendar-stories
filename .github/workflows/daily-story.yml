@@ -15,6 +15,10 @@ on:
         description: "指定日期 YYYY-MM-DD（留空＝今天）"
         type: string
         default: ""
+      ignore_start_date:
+        description: "測試用：無視『12/21 才開始自動發』的保護（會真的發一則，記得事後手動刪）"
+        type: boolean
+        default: false
       platform:
         description: "發哪個平台（測試時可單獨測 fb 或 ig）"
         type: choice
@@ -46,10 +50,12 @@ jobs:
           DO_PUBLISH: ${{ github.event_name == 'schedule' || inputs.publish }}
           DATE_ARG: ${{ inputs.date }}
           PLATFORM_ARG: ${{ inputs.platform }}
+          IGNORE_START: ${{ inputs.ignore_start_date }}
         run: |
           ARGS=""
           if [ "$DO_PUBLISH" = "true" ]; then ARGS="$ARGS --publish"; fi
           if [ -n "$DATE_ARG" ]; then ARGS="$ARGS --date $DATE_ARG"; fi
+          if [ "$IGNORE_START" = "true" ]; then ARGS="$ARGS --ignore-start"; fi
           if [ -n "$PLATFORM_ARG" ]; then ARGS="$ARGS --platform $PLATFORM_ARG"; fi
           node publish/publish-stories.js --check-url $ARGS
       - name: 存回發文紀錄
