@@ -15,6 +15,11 @@ on:
         description: "指定日期 YYYY-MM-DD（留空＝今天）"
         type: string
         default: ""
+      platform:
+        description: "發哪個平台（測試時可單獨測 fb 或 ig）"
+        type: choice
+        options: [both, fb, ig]
+        default: both
 
 permissions:
   contents: write   # 把 posted.json 存回倉庫（防重複發＋讓排程保持活躍）
@@ -40,10 +45,12 @@ jobs:
           STORIES_DIR: stories
           DO_PUBLISH: ${{ github.event_name == 'schedule' || inputs.publish }}
           DATE_ARG: ${{ inputs.date }}
+          PLATFORM_ARG: ${{ inputs.platform }}
         run: |
           ARGS=""
           if [ "$DO_PUBLISH" = "true" ]; then ARGS="$ARGS --publish"; fi
           if [ -n "$DATE_ARG" ]; then ARGS="$ARGS --date $DATE_ARG"; fi
+          if [ -n "$PLATFORM_ARG" ]; then ARGS="$ARGS --platform $PLATFORM_ARG"; fi
           node publish/publish-stories.js --check-url $ARGS
       - name: 存回發文紀錄
         if: ${{ github.event_name == 'schedule' || inputs.publish }}
